@@ -1,0 +1,130 @@
+// FitChallenge - DBML (formato simple)
+
+// un user puede participar de muchos challenges
+// un challenge tiene muchos users participando
+
+Table users {
+  id integer [primary key]
+  name varchar(100)
+  email varchar(255) [not null, unique]
+  password_digest varchar(255) [not null]
+  role varchar(20) // 'admin' | 'creator' | 'standard'
+  avatar_url varchar(255)
+  bio text
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table challenges {
+  id integer [primary key]
+  owner_id integer [not null] // FK -> users.id
+  name varchar(140) [not null]
+  description text
+  category varchar(50) // tener en cuenta que se utiliza tags tambien
+  start_date date [not null]
+  end_date date [not null]
+  frequency varchar(20) [not null] // 'daily' | 'weekly'
+  points_per_entry integer [not null, default: 1]
+  max_entries_per_period integer [not null, default: 1]
+  is_approval_required boolean [not null, default: false]
+  status varchar(20) [not null, default: 'draft'] // 'draft' | 'active' | 'finished' | 'paused'
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table participations {
+  id integer [primary key]
+  user_id integer [not null]      // FK -> users.id
+  challenge_id integer [not null] // FK -> challenges.id
+  role varchar(20) [not null, default: 'participant'] // 'participant' | 'creator'
+  state varchar(20) [not null, default: 'active']     // 'pending' | 'active' | 'left' | 'banned'
+  total_points integer [not null, default: 0]
+  joined_at timestamp [not null]
+  left_at timestamp
+  created_at timestamp
+  updated_at timestamp
+
+  // indice para tener solo 1 participacion por user por challenge
+  indexes {
+    (user_id, challenge_id) [unique]
+  }
+}
+
+// es una entrada que suma puntos con cada log
+Table progress_entries {
+  id integer [primary key]
+  participation_id integer [not null] // FK -> participations.id
+  logged_on date [not null]
+  quantity decimal(10,2) [not null] // minutos, repeticiones, etc.
+  note varchar(255)
+  points_awarded integer [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+// insignias
+Table badges {
+  id integer [primary key]
+  code varchar(50) [unique] // único 
+  name varchar(100) [not null]
+  description varchar(255)
+  created_at timestamp
+  updated_at timestamp
+}
+
+// relacion N a N entre users y badges
+Table user_badges {
+  id integer [primary key]
+  user_id integer [not null]  // FK -> users.id
+  badge_id integer [not null] // FK -> badges.id
+  earned_at timestamp [not null]
+
+  // un badge una vez por user
+  indexes {
+    (user_id, badge_id) [unique]
+  }
+}
+
+Table notifications {
+  id integer [primary key]
+  user_id integer [not null] // FK -> users.id
+  title varchar(120)
+  body varchar(255)
+  read_at timestamp
+  notifiable_type varchar(50) // polimórfico opcional
+  notifiable_id integer
+  created_at timestamp
+}
+
+// etiquetas o categorias que puede tener mi desafio, un challenge puede tener más de una
+Table tags {
+  id integer [primary key]
+  name varchar(50) // único recomendado
+}
+
+// tabla de relacion N a N entre tags y challenges
+Table challenge_tags {
+  id integer [primary key]
+  challenge_id integer [not null] // FK -> challenges.id
+  tag_id integer [not null]       // FK -> tags.id
+  
+    indexes {
+    (challenge_id, tag_id) [unique] // evita el mismo tag 2 veces en el mismo challenge
+  }
+}
+
+// Relaciones (formato simple)
+Ref: challenges.owner_id > users.id
+
+Ref: participations.user_id > users.id
+Ref: participations.challenge_id > challenges.id
+
+Ref: progress_entries.participation_id > participations.id
+
+Ref: user_badges.user_id > users.id
+Ref: user_badges.badge_id > badges.id
+
+Ref: notifications.user_id > users.id
+
+Ref: challenge_tags.challenge_id > challenges.id
+Ref: challenge_tags.tag_id > tags.id
