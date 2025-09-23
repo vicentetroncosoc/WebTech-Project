@@ -1,2 +1,5 @@
 # WebTech-Project
-Repositorio para subir assignment 1 del proyecto semestral de Web Technologies
+
+## Integrantes del Proyecto:
+- Pedro Ariztia
+- Vicente Troncoso
