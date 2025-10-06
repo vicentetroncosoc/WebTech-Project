@@ -1,4 +1,4 @@
-# WebTech-Project
+# WebTech-Project FITCHALLENGE
 
 ### Integrantes del Proyecto:
 - Pedro Ariztia
@@ -37,3 +37,4 @@ As a challenge creator, I want to delete my challenges, so I can remove if they 
 As an administrator, I want to manage all users, so I can block or delete inappropiate accounts
 
 As an administrator, I want to assign roles to users, so they can have certain permissions
+>>>>>>> 5bb138c (inicio)
