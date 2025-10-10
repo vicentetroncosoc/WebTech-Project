@@ -1,0 +1,15 @@
+<h1>Participations</h1>
+<table class="table table-hover bg-white">
+  <thead><tr><th>User</th><th>Challenge</th><th>Role</th><th>State</th><th>Total points</th></tr></thead>
+  <tbody>
+    <% @participations.each do |p| %>
+      <tr>
+        <td><%= link_to (p.user.name || p.user.email), p.user %></td>
+        <td><%= link_to p.challenge.name, p.challenge %></td>
+        <td><%= p.role %></td>
+        <td><%= p.state %></td>
+        <td><%= p.total_points %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

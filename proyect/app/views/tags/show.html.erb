@@ -1,0 +1,7 @@
+<h1>#<%= @tag.name %></h1>
+<h4 class="mt-4">Challenges</h4>
+<ul>
+  <% @challenges.each do |c| %>
+    <li><%= link_to c.name, c %> — <%= c.owner.name.presence || c.owner.email %></li>
+  <% end %>
+</ul>

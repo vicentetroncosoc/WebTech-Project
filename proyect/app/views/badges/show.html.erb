@@ -1,0 +1,10 @@
+<h1><%= @badge.name %></h1>
+<p class="text-muted"><code><%= @badge.code %></code></p>
+<p><%= simple_format(@badge.description) %></p>
+
+<h4 class="mt-4">Users with this badge</h4>
+<ul>
+  <% @badge.users.each do |u| %>
+    <li><%= link_to (u.name.presence || u.username), u %></li>
+  <% end %>
+</ul>

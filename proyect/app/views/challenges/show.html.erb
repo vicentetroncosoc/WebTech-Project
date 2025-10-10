@@ -1,0 +1,30 @@
+<h1><%= @challenge.name %></h1>
+<p class="text-muted">
+  <strong>Dates:</strong> <%= @challenge.start_date %> – <%= @challenge.end_date %> |
+  <strong>Owner:</strong> <%= @challenge.owner.name.presence || @challenge.owner.email %> |
+  <strong>Status:</strong> <%= @challenge.status %> |
+  <strong>Frequency:</strong> <%= @challenge.frequency %>
+</p>
+
+<p><%= simple_format(@challenge.description) %></p>
+
+<h4 class="mt-4">Participants</h4>
+<ul class="list-group mb-3">
+  <% @challenge.participants.each do |u| %>
+    <% part = @challenge.participations.find { |p| p.user_id == u.id } %>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <%= link_to (u.name.presence || u.email), u %>
+      <span>
+        <span class="badge text-bg-secondary me-2"><%= part&.role || "participant" %></span>
+        <span class="badge text-bg-primary"><%= part&.total_points || 0 %> pts</span>
+      </span>
+    </li>
+  <% end %>
+</ul>
+
+<p>
+  <strong>Tags:</strong>
+  <% @challenge.tags.each do |t| %>
+    <span class="badge text-bg-secondary"><%= t.name %></span>
+  <% end %>
+</p>

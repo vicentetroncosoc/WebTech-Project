@@ -1,0 +1,8 @@
+<h1 class="mb-3">Badges</h1>
+<div class="list-group">
+  <% @badges.each do |b| %>
+    <a class="list-group-item list-group-item-action" href="<%= badge_path(b) %>">
+      <strong><%= b.name %></strong> — <code><%= b.code %></code>
+    </a>
+  <% end %>
+</div>

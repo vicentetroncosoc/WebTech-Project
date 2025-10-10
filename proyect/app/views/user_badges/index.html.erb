@@ -1,0 +1,14 @@
+<h1>User badges</h1>
+<table class="table table-hover bg-white">
+  <thead><tr><th>User</th><th>Badge</th><th>Earned at</th></tr></thead>
+  <tbody>
+    <% @user_badges.each do |ub| %>
+      <tr>
+        <td><%= link_to (ub.user.name || ub.user.email), ub.user %></td>
+        <td><%= link_to ub.badge.name, ub.badge %></td>
+        <td><%= link_to ub.earned_at, ub %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

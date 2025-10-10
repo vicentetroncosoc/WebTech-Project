@@ -1,0 +1,13 @@
+<h1>Challenge tags</h1>
+<table class="table table-hover bg-white">
+  <thead><tr><th>Challenge</th><th>Tag</th></tr></thead>
+  <tbody>
+    <% @challenge_tags.each do |ct| %>
+      <tr>
+        <td><%= link_to ct.challenge.name, ct.challenge %></td>
+        <td><%= link_to ct.tag.name, ct.tag %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+

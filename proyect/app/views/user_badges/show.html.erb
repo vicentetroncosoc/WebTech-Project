@@ -1,0 +1,5 @@
+<h1>User badge</h1>
+<p><strong>User:</strong> <%= link_to (@user_badge.user.name || @user_badge.user.email), @user_badge.user %></p>
+<p><strong>Badge:</strong> <%= link_to @user_badge.badge.name, @user_badge.badge %></p>
+<p><strong>Earned at:</strong> <%= @user_badge.earned_at %></p>
+

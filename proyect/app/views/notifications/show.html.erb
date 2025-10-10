@@ -1,0 +1,11 @@
+<h1><%= @notification.title.presence || "(no title)" %></h1>
+<p class="text-muted">To <%= link_to (@notification.user.name || @notification.user.email), @notification.user %></p>
+<p><%= simple_format(@notification.body.to_s) %></p>
+<p class="small text-muted">
+  <% if @notification.notifiable.present? %>
+    Related to: <%= @notification.notifiable_type %> #<%= @notification.notifiable_id %>
+  <% end %>
+  <% if @notification.read_at.present? %>
+    • Read at: <%= @notification.read_at %>
+  <% end %>
+</p>

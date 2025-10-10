@@ -1,0 +1,15 @@
+<h1>Notifications</h1>
+<ul class="list-group">
+  <% @notifications.each do |n| %>
+    <li class="list-group-item d-flex justify-content-between">
+      <div>
+        <strong><%= link_to (n.title.presence || "(no title)"), n %></strong>
+        <div class="small text-muted">
+          to <%= link_to (n.user.name || n.user.email), n.user %>
+          <% if n.read_at.present? %> • read <%= n.read_at %><% end %>
+        </div>
+      </div>
+      <span class="text-muted"><%= n.created_at.strftime("%Y-%m-%d") %></span>
+    </li>
+  <% end %>
+</ul>

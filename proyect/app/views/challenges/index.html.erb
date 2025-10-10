@@ -1,0 +1,29 @@
+<h1 class="mb-4 text-center">🏆 Challenges 🏆</h1>
+
+<div class="row g-4">
+  <% @challenges.each do |c| %>
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm h-100 border-0">
+        <div class="card-body">
+          <h5 class="card-title">
+            <%= link_to c.name, c, class: "stretched-link text-decoration-none" %>
+          </h5>
+          <p class="text-muted small mb-2">
+            <strong>Dates:</strong> <%= c.start_date %> – <%= c.end_date %>
+          </p>
+          <p class="mb-2"><strong>Owner:</strong> <%= c.owner.name.presence || c.owner.email %></p>
+          <p class="mb-2">
+            <strong>Tags:</strong>
+            <% c.tags.each do |t| %>
+              <span class="badge bg-primary me-1"><%= t.name %></span>
+            <% end %>
+          </p>
+          <p class="mb-0 text-secondary"><%= truncate(c.description, length: 100) %></p>
+        </div>
+        <div class="card-footer bg-white border-0">
+          <small class="text-muted"><%= pluralize(c.participants.count, "participant") %></small>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
