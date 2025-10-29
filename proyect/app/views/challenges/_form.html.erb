@@ -1,0 +1,96 @@
+<%= form_with model: @challenge, local: true, data: { turbo: false } do |f| %>
+
+  <% if @challenge.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">Revisa los errores:</h4>
+      <ul class="mb-0">
+        <% @challenge.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :name, "Nombre", class: "form-label" %>
+    <%= f.text_field :name, class: "form-control", required: true, placeholder: "30 días sin..." %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :description, "Descripción", class: "form-label" %>
+    <%= f.text_area :description, class: "form-control", rows: 4, placeholder: "Explica el desafío y sus reglas..." %>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <%= f.label :start_date, "Inicio", class: "form-label" %>
+      <%= f.date_field :start_date, class: "form-control", required: true %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :end_date, "Término", class: "form-label" %>
+      <%= f.date_field :end_date, class: "form-control", required: true %>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-0">
+    <div class="col-md-6">
+      <%= f.label :owner_id, "Dueño", class: "form-label" %>
+      <%= f.select :owner_id,
+          options_from_collection_for_select(@users, :id, ->(u){ u.name.presence || u.username }, @challenge.owner_id),
+          { prompt: "Selecciona un dueño" },
+          class: "form-select", required: true %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :category, "Categoría", class: "form-label" %>
+      <%= f.text_field :category, class: "form-control", placeholder: "fitness, hábitos, etc." %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+  <%= f.label :tag_ids, "Tags", class: "form-label" %>
+  <%= f.select :tag_ids,
+        options_from_collection_for_select(@tags, :id, :name, @challenge.tag_ids),
+        {},
+        multiple: true, size: 6, class: "form-select" %>
+  <div class="form-text">
+    Usa <kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + clic para seleccionar más de una.
+  </div>
+</div>
+
+
+  <div class="row g-3 mt-0">
+    <div class="col-md-4">
+      <%= f.label :frequency, "Frecuencia", class: "form-label" %>
+      <%= f.select :frequency, options_for_select([["Diario","daily"],["Semanal","weekly"]], @challenge.frequency),
+           {}, class: "form-select", required: true %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :points_per_entry, "Puntos por registro", class: "form-label" %>
+      <%= f.number_field :points_per_entry, class: "form-control", min: 0, step: 1, required: true %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :max_entries_per_period, "Máx. registros por período", class: "form-label" %>
+      <%= f.number_field :max_entries_per_period, class: "form-control", min: 1, step: 1, required: true %>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-0">
+    <div class="col-md-6">
+      <%= f.label :is_approval_required, "¿Requiere aprobación?", class: "form-label d-block" %>
+      <div class="form-check form-switch">
+        <%= f.check_box :is_approval_required, class: "form-check-input", role: "switch" %>
+        <label class="form-check-label">Sí</label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :status, "Estado", class: "form-label" %>
+      <%= f.select :status, options_for_select([["Borrador","draft"],["Activo","active"],["Pausado","paused"],["Terminado","finished"]], @challenge.status),
+           {}, class: "form-select", required: true %>
+    </div>
+  </div>
+
+  <div class="mt-4 d-flex gap-2">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancelar", (@challenge.persisted? ? @challenge : challenges_path), class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

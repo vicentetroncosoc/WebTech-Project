@@ -1,15 +1,44 @@
-<h1>Participations</h1>
-<table class="table table-hover bg-white">
-  <thead><tr><th>User</th><th>Challenge</th><th>Role</th><th>State</th><th>Total points</th></tr></thead>
+<h1 class="mb-4">Participations</h1>
+
+<div class="d-flex justify-content-end mb-3">
+  <%= link_to "➕ New Participation", new_participation_path, class: "btn btn-primary" %>
+</div>
+
+<table class="table table-hover align-middle">
+  <thead>
+    <tr>
+      <th>Usuario</th>
+      <th>Challenge</th>
+      <th>Rol</th>
+      <th>Estado</th>
+      <th class="text-end">Puntos</th>
+      <th>Ingreso</th>
+      <th>Salida</th>
+      <th class="text-end">Acciones</th>
+    </tr>
+  </thead>
   <tbody>
     <% @participations.each do |p| %>
       <tr>
-        <td><%= link_to (p.user.name || p.user.email), p.user %></td>
+        <td><%= link_to (p.user.name.presence || p.user.email), p.user %></td>
         <td><%= link_to p.challenge.name, p.challenge %></td>
-        <td><%= p.role %></td>
-        <td><%= p.state %></td>
-        <td><%= p.total_points %></td>
+        <td><span class="badge text-bg-secondary"><%= p.role %></span></td>
+        <td><span class="badge text-bg-primary"><%= p.state %></span></td>
+        <td class="text-end"><%= p.total_points %></td>
+        <td><%= p.joined_at&.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= p.left_at&.strftime("%Y-%m-%d %H:%M") || "-" %></td>
+        <td class="text-end">
+          <div class="d-inline-flex gap-2">
+            <%= link_to "Ver", p, class: "btn btn-sm btn-outline-secondary" %>
+            <%= link_to "Editar", edit_participation_path(p), class: "btn btn-sm btn-outline-primary" %>
+            <%= button_to "Eliminar", p, method: :delete,
+                  form: { data: { turbo: false } },
+                  onclick: "return confirm('¿Eliminar esta participación?');",
+                  class: "btn btn-sm btn-outline-danger" %>
+          </div>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+

@@ -1,0 +1,68 @@
+<%= form_with model: @user, local: true, data: { turbo: false } do |f| %>
+  <% if @user.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">Revisa los errores:</h4>
+      <ul class="mb-0">
+        <% @user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <%= f.label :username, "Username", class: "form-label" %>
+      <%= f.text_field :username, class: "form-control", required: true, maxlength: 50, placeholder: "vicente_tc" %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :name, "Nombre", class: "form-label" %>
+      <%= f.text_field :name, class: "form-control", maxlength: 120, placeholder: "Nombre visible" %>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-0">
+    <div class="col-md-6">
+      <%= f.label :email, "Email", class: "form-label" %>
+      <%= f.email_field :email, class: "form-control", required: true, maxlength: 120, placeholder: "usuario@correo.com" %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :role, "Rol", class: "form-label" %>
+      <%= f.text_field :role, class: "form-control", maxlength: 50, placeholder: "admin / user" %>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-0">
+  <div class="col-md-6">
+    <%= f.label :password, "Contraseña", class: "form-label" %>
+    <%= f.password_field :password,
+          class: "form-control",
+          minlength: 6,
+          placeholder: (@user.new_record? ? "Mínimo 6 caracteres" : "Dejar en blanco para no cambiar"),
+          required: @user.new_record? %>
+  </div>
+  <div class="col-md-6">
+    <%= f.label :password_confirmation, "Confirmación de contraseña", class: "form-label" %>
+    <%= f.password_field :password_confirmation,
+          class: "form-control",
+          minlength: 6,
+          placeholder: (@user.new_record? ? "Repite la contraseña" : "Dejar en blanco si no cambias"),
+          required: @user.new_record? %>
+  </div>
+</div>
+
+  <div class="mb-3 mt-0">
+    <%= f.label :avatar_url, "Avatar URL", class: "form-label" %>
+    <%= f.url_field :avatar_url, class: "form-control", maxlength: 255, placeholder: "https://..." %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :bio, "Bio", class: "form-label" %>
+    <%= f.text_area :bio, class: "form-control", rows: 4, maxlength: 1000, placeholder: "Sobre ti (opcional)" %>
+  </div>
+
+  <div class="mt-3 d-flex gap-2">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancelar", (@user.persisted? ? @user : users_path), class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

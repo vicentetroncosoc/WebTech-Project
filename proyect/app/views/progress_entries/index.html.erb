@@ -1,16 +1,42 @@
-<h1>Progress entries</h1>
-<table class="table table-hover bg-white">
-  <thead><tr><th>Date</th><th>User</th><th>Challenge</th><th>Qty</th><th>Points</th></tr></thead>
+<h1 class="mb-4">Progress Entries</h1>
+
+<div class="d-flex justify-content-end mb-3">
+  <%= link_to "➕ Nuevo Registro", new_progress_entry_path, class: "btn btn-primary" %>
+</div>
+
+<table class="table table-hover align-middle">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Usuario</th>
+      <th>Challenge</th>
+      <th class="text-end">Cantidad</th>
+      <th class="text-end">Puntos</th>
+      <th>Nota</th>
+      <th class="text-end">Acciones</th>
+    </tr>
+  </thead>
   <tbody>
-    <% @entries.each do |e| %>
+    <% @progress_entries.each do |pe| %>
       <tr>
-        <td><%= link_to e.logged_on, e %></td>
-        <td><%= link_to (e.participation.user.name || e.participation.user.email), e.participation.user %></td>
-        <td><%= link_to e.participation.challenge.name, e.participation.challenge %></td>
-        <td><%= e.quantity %></td>
-        <td><%= e.points_awarded %></td>
+        <td><%= pe.logged_on %></td>
+        <td><%= pe.participation.user.name.presence || pe.participation.user.email %></td>
+        <td><%= link_to pe.participation.challenge.name, pe.participation.challenge %></td>
+        <td class="text-end"><%= pe.quantity %></td>
+        <td class="text-end"><%= pe.points_awarded %></td>
+        <td><%= pe.note %></td>
+        <td class="text-end">
+  <div class="d-inline-flex gap-2">
+    <%= link_to "Ver", pe, class: "btn btn-sm btn-outline-secondary" %>
+    <%= link_to "Editar", edit_progress_entry_path(pe), class: "btn btn-sm btn-outline-primary" %>
+    <%= button_to "Eliminar", pe, method: :delete,
+          form: { data: { turbo: false } },
+          onclick: "return confirm('¿Eliminar este registro?');",
+          class: "btn btn-sm btn-outline-danger" %>
+  </div>
+</td>
+
       </tr>
     <% end %>
   </tbody>
 </table>
-

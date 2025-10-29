@@ -1,8 +1,38 @@
-<h1 class="mb-3">Badges</h1>
-<div class="list-group">
-  <% @badges.each do |b| %>
-    <a class="list-group-item list-group-item-action" href="<%= badge_path(b) %>">
-      <strong><%= b.name %></strong> — <code><%= b.code %></code>
-    </a>
-  <% end %>
+<h1 class="mb-4">Badges</h1>
+
+<div class="d-flex justify-content-end mb-3">
+  <%= link_to "➕ New Badge", new_badge_path, class: "btn btn-primary" %>
 </div>
+
+<table class="table table-hover align-middle">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Código</th>
+      <th>Descripción</th>
+      <th class="text-end">Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @badges.each do |b| %>
+      <tr>
+        <td><%= link_to b.name, b %></td>
+        <td><code><%= b.code %></code></td>
+        <td><%= truncate(b.description, length: 80) %></td>
+        <td class="text-end">
+          <div class="d-inline-flex gap-2">
+            <%= link_to "Ver", b, class: "btn btn-sm btn-outline-secondary" %>
+            <%= link_to "Editar", edit_badge_path(b), class: "btn btn-sm btn-outline-primary" %>
+
+            
+            <%= button_to "Eliminar", b, method: :delete,
+            form: { data: { turbo: false } },
+            onclick: "return confirm('¿Eliminar este badge?');",
+            class: "btn btn-sm btn-outline-danger" %>
+
+          </div>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

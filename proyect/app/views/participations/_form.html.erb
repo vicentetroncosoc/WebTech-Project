@@ -1,0 +1,72 @@
+<%= form_with model: @participation, local: true, data: { turbo: false } do |f| %>
+  <% if @participation.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">Revisa los errores:</h4>
+      <ul class="mb-0">
+        <% @participation.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="row g-3">
+    <div class="col-md-6">
+      <%= f.label :user_id, "Usuario", class: "form-label" %>
+      <%= f.select :user_id,
+        options_from_collection_for_select(
+          @users,
+          :id,
+          ->(u){ u.name.presence || u.username.presence || u.email },
+          @participation.user_id
+        ),
+        { prompt: "Selecciona usuario" },
+        class: "form-select", required: true %>
+    </div>
+
+    <div class="col-md-6">
+      <%= f.label :challenge_id, "Challenge", class: "form-label" %>
+      <%= f.select :challenge_id,
+        options_from_collection_for_select(
+          @challenges,
+          :id,
+          ->(c){ "#{c.name} (#{c.start_date}–#{c.end_date})" },
+          @participation.challenge_id
+        ),
+        { prompt: "Selecciona challenge" },
+        class: "form-select", required: true %>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-0">
+    <div class="col-md-4">
+      <%= f.label :role, "Rol", class: "form-label" %>
+      <%= f.text_field :role, class: "form-control", required: true, placeholder: "participant / moderator / owner" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :state, "Estado", class: "form-label" %>
+      <%= f.text_field :state, class: "form-control", required: true, placeholder: "active / left / banned" %>
+    </div>
+    <div class="col-md-4">
+      <%= f.label :total_points, "Puntos totales", class: "form-label" %>
+      <%= f.number_field :total_points, class: "form-control", step: 1, min: 0, required: true %>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-0">
+    <div class="col-md-6">
+      <%= f.label :joined_at, "Ingresó", class: "form-label" %>
+      <%= f.datetime_local_field :joined_at, class: "form-control", required: true %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :left_at, "Salió", class: "form-label" %>
+      <%= f.datetime_local_field :left_at, class: "form-control" %>
+      <div class="form-text">Déjalo vacío si sigue activo.</div>
+    </div>
+  </div>
+
+  <div class="mt-3 d-flex gap-2">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancelar", (@participation.persisted? ? @participation : participations_path), class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

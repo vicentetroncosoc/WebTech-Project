@@ -21,6 +21,8 @@
           <%= link_to "Badges", badges_path, class: "nav-link" %>
           <%= link_to "Tags", tags_path, class: "nav-link" %>
           <%= link_to "Notifications", notifications_path, class: "nav-link" %>
+          <%= link_to "Participations", participations_path, class: "nav-link" %>
+          <%= link_to "Progress Entries", progress_entries_path, class: "nav-link" %>
           <!-- Agregar aqui los que quiero que aparezcan en nav bar -->
 
         </div>
@@ -29,6 +31,17 @@
 
     <!-- Contenido principal -->
     <main class="container my-4 flex-grow-1">
+    <% flash.each do |key, value| %>
+  <% css = case key.to_s
+           when "notice" then "alert alert-success"
+           when "alert"  then "alert alert-warning"
+           else "alert alert-info"
+           end %>
+  <div class="<%= css %> my-2" role="alert">
+    <%= value %>
+  </div>
+<% end %>
+
       <%= yield %>
     </main>
 
