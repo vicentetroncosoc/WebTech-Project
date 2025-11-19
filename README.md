@@ -4,13 +4,28 @@
 - Pedro Ariztia
 - Vicente Troncoso
 
+### Roles:
+Normal user: can register into challenges and win badges.
+
+Creators: can create or edit its own challenges, but cannot edit other's challenges or delete users. Plus everything normal users can do.
+
+Admin: can create/edit or delete everything: from challenges to users.
+
+
+### User Credentials:
+#### Admin:
+admin@example.com - secret123
+#### Creators:
+- pedro@example.com - secret123 (creator)
+- vicente@example.com - secret123
+
+#### Users:
+- juan@example.com - secret123
+- luis@example.com - secret123
 
 ### User Stores:
-
 ###### **Account**
-
 As a User, I want to create an account, so i can securely log in and track my progress
-
 
 ###### **Search and filter**
 
