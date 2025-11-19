@@ -1,24 +1,14 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Clave todos los usuarios: secret123
 
-Things you may want to cover:
+## Admin:
+    admin@example.com
 
-* Ruby version
+## Creators:
+    pedro@example.com
+    vicente@example.com
 
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Standard:
+    juan@example.com
+    luis@example.com

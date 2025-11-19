@@ -1,5 +1,6 @@
 class User < ApplicationRecord
-  has_secure_password
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
 
   has_many :owned_challenges, class_name: "Challenge", foreign_key: :owner_id, dependent: :nullify
   has_many :participations, dependent: :destroy
@@ -7,6 +8,8 @@ class User < ApplicationRecord
   has_many :user_badges, dependent: :destroy
   has_many :badges, through: :user_badges
   has_many :notifications, dependent: :destroy
+  has_many :progress_entries, through: :participations
+
 
   # Validaciones para CRUD
   validates :username, presence: true,
@@ -20,8 +23,16 @@ class User < ApplicationRecord
   validates :avatar_url, length: { maximum: 255 }, allow_blank: true
   validates :bio, length: { maximum: 1000 }, allow_blank: true
 
-  # Password:
-  # - requerido SOLO al crear
-  # - opcional al editar (allow_nil)
-  validates :password, length: { minimum: 6 }, allow_nil: true
+
+  def admin?
+    role.to_s.downcase == "admin"
+  end
+
+  def creator?
+    role.to_s.downcase == "creator"
+  end
+
+  def standard?
+    !admin? && !creator?
+  end
 end

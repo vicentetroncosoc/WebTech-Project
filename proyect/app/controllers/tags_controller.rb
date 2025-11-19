@@ -11,10 +11,13 @@ class TagsController < ApplicationController
 
   def new
     @tag = Tag.new
+    # authorize! :create, @tag
   end
 
   def create
     @tag = Tag.new(tag_params)
+    # authorize! :create, @tag
+
     if @tag.save
       redirect_to @tag, notice: "Tag creado correctamente."
     else
@@ -23,9 +26,11 @@ class TagsController < ApplicationController
   end
 
   def edit
+    authorize! :update, @tag
   end
 
   def update
+    authorize! :update, @tag
     if @tag.update(tag_params)
       redirect_to @tag, notice: "Tag actualizado correctamente."
     else
@@ -34,6 +39,7 @@ class TagsController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, @tag
     @tag.destroy
     redirect_to tags_path, notice: "Tag eliminado."
   end

@@ -1,7 +1,9 @@
 <h1 class="mb-4">Usuarios</h1>
 
 <div class="d-flex justify-content-end mb-3">
-  <%= link_to "➕ New User", new_user_path, class: "btn btn-primary" %>
+  <% if can?(:create, User) %>
+    <%= link_to "➕ Nuevo usuario", new_user_path, class: "btn btn-primary" %>
+  <% end %>
 </div>
 
 <table class="table table-hover align-middle">
@@ -20,18 +22,36 @@
         <td><%= link_to u.username, u %></td>
         <td><%= u.name.presence || "-" %></td>
         <td><%= u.email %></td>
-        <td><%= u.role.presence || "-" %></td>
+        <td><%= u.role.presence || "standard" %></td>
+
         <td class="text-end">
           <div class="d-inline-flex gap-2">
-            <%= link_to "Ver", u, class: "btn btn-sm btn-outline-secondary" %>
-            <%= link_to "Editar", edit_user_path(u), class: "btn btn-sm btn-outline-primary" %>
-            <%= button_to "Eliminar", u,
-                  method: :delete,
-                  form: { data: { turbo: false } },
-                  onclick: "return confirm('¿Eliminar este usuario?');",
-                  class: "btn btn-sm btn-outline-danger" %>
+
+            <!-- Ver: cualquier usuario puede -->
+            <% if can?(:read, u) %>
+              <%= link_to "Ver", u, class: "btn btn-sm btn-outline-secondary" %>
+            <% end %>
+
+            <!-- Editar: solo admin -->
+            <% if can?(:update, u) %>
+              <%= link_to "Editar",
+                          edit_user_path(u),
+                          class: "btn btn-sm btn-outline-primary" %>
+            <% end %>
+
+            <!-- Eliminar: solo admin -->
+            <% if can?(:destroy, u) %>
+              <%= button_to "Eliminar",
+                            u,
+                            method: :delete,
+                            class: "btn btn-sm btn-outline-danger",
+                            form: { data: { turbo: false } },
+                            onclick: "return confirm('¿Eliminar este usuario?');" %>
+            <% end %>
+
           </div>
         </td>
+
       </tr>
     <% end %>
   </tbody>

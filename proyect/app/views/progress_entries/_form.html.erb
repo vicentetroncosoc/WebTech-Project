@@ -1,6 +1,6 @@
 <%= form_with model: @progress_entry, local: true, data: { turbo: false } do |f| %>
   <% if @progress_entry.errors.any? %>
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger">
       <h4 class="alert-heading">Revisa los errores:</h4>
       <ul class="mb-0">
         <% @progress_entry.errors.full_messages.each do |msg| %>
@@ -10,6 +10,7 @@
     </div>
   <% end %>
 
+  <!-- Participación -->
   <div class="mb-3">
     <%= f.label :participation_id, "Participación (Usuario — Challenge)", class: "form-label" %>
     <%= f.select :participation_id,
@@ -23,6 +24,7 @@
       class: "form-select", required: true %>
   </div>
 
+
   <div class="row g-3">
     <div class="col-md-4">
       <%= f.label :logged_on, "Fecha", class: "form-label" %>
@@ -32,10 +34,31 @@
       <%= f.label :quantity, "Cantidad", class: "form-label" %>
       <%= f.number_field :quantity, class: "form-control", step: 0.01, min: 0, required: true, placeholder: "p.ej., 5.0" %>
     </div>
-    <div class="col-md-4">
-      <%= f.label :points_awarded, "Puntos", class: "form-label" %>
-      <%= f.number_field :points_awarded, class: "form-control", step: 1, min: 0, required: true %>
-    </div>
+
+    <% if current_user.admin? || current_user.creator? %>
+  <!-- Admin / Creator: pueden asignar puntos -->
+  <div class="mb-3">
+    <%= f.label :points_awarded, "Puntos", class: "form-label" %>
+    <%= f.number_field :points_awarded,
+                       step: 1,
+                       class: "form-control",
+                       required: true %>
+  </div>
+<% else %>
+  <!-- Standard: NO puede asignar puntos -->
+  <div class="mb-3">
+    <%= f.label :points_awarded, "Puntos", class: "form-label" %>
+    <p class="form-control-plaintext mb-1">
+      Explica en la Nota el esfuerzo realizado y, en base a eso y la cantidad,
+      un creador o administrador te asignará un puntaje.
+    </p>
+
+    <!-- Enviamos 0 (o el valor actual) de forma oculta para no romper validaciones -->
+    <%= f.hidden_field :points_awarded,
+                       value: @progress_entry.points_awarded || 0 %>
+  </div>
+<% end %>
+
   </div>
 
   <div class="mb-3 mt-3">

@@ -1,0 +1,53 @@
+<h2 class="mb-4">Iniciar sesión</h2>
+
+<div class="row">
+  <div class="col-md-6 col-lg-5">
+
+    <% if flash[:alert].present? %>
+      <div class="alert alert-danger">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+
+    <% if flash[:notice].present? %>
+      <div class="alert alert-info">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+
+    <%= form_for resource,
+                 as: resource_name,
+                 url: session_path(resource_name),
+                 html: { data: { turbo: false } } do |f| %>
+
+      <div class="mb-3">
+        <%= f.label :email, "Email", class: "form-label" %>
+        <%= f.email_field :email,
+                          autofocus: true,
+                          autocomplete: "email",
+                          class: "form-control" %>
+      </div>
+
+      <div class="mb-3">
+        <%= f.label :password, "Contraseña", class: "form-label" %>
+        <%= f.password_field :password,
+                             autocomplete: "current-password",
+                             class: "form-control" %>
+      </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="form-check mb-3">
+          <%= f.check_box :remember_me, class: "form-check-input" %>
+          <%= f.label :remember_me, "Recordarme", class: "form-check-label" %>
+        </div>
+      <% end %>
+
+      <div class="d-grid gap-2 mt-3">
+        <%= f.submit "Iniciar sesión", class: "btn btn-primary" %>
+        <%= link_to "Crear cuenta nueva",
+                    new_user_registration_path,
+                    class: "btn btn-outline-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

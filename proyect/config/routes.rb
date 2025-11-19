@@ -1,11 +1,19 @@
 Rails.application.routes.draw do
+
+  devise_for :users
+
   get "challenge_tags/index"
   get "challenge_tags/show"
   get "user_badges/index"
   get "user_badges/show"
   root "challenges#index"
 
-  resources :challenges
+  resources :challenges do
+  member do
+    post   :join
+    delete :leave
+  end
+end
   resources :users
   resources :badges
   resources :tags
